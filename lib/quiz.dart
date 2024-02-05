@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:udemy_quiz_app/data/questions.dart';
 import 'package:udemy_quiz_app/questions_screen.dart';
 import 'package:udemy_quiz_app/start_screen.dart';
 
@@ -12,22 +13,37 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
-  Widget? activeScreen;
+  List<String> selectedAnswers = [];
+  var activeScreen = 'start-screen';
 
-  @override
-  void initState() {
-    activeScreen = StartScreen(switchScreen);
-    super.initState();
-  }
 
   void switchScreen() { // сменя екрана для кнопки
     setState(() {
-      activeScreen = const QuestionsScreen();
+      activeScreen = 'questions-screen';
     });
+  }
+
+  void chooseAnswer(String answer) { //закидываем ответы в список
+    selectedAnswers.add(answer);
+
+    if (selectedAnswers.length == questions.length) { //когда закончили вопросы
+      setState(() {
+        selectedAnswers = [];
+        activeScreen = 'start-screen';
+      });
+    }
+
   }
 
   @override
   Widget build(context) {
+     Widget screenWidget = StartScreen(switchScreen);
+
+    if (activeScreen == 'questions-screen') {
+      screenWidget = QuestionsScreen(
+        onSelectAnswer: chooseAnswer,
+      );
+    }
    return MaterialApp(
       home: Scaffold(
         body: Container(
@@ -41,7 +57,8 @@ class _QuizState extends State<Quiz> {
                 end: Alignment.bottomRight,
               ),
             ),
-            child: activeScreen),
+            child: screenWidget
+          ),
       ),
     );    
   }

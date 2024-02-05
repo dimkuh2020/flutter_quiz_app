@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AnswerButton extends StatelessWidget {
-  const AnswerButton(this.answerText, this.onTap, {super.key}); // или const AnswerButton({super.key, required this.answerText, required this.onTap});
+ const AnswerButton({super.key, required this.answerText, required this.onTap});  /* или const AnswerButton(this.answerText, this.onTap, {super.key});*/
 
   final String answerText; 
   final void Function() onTap; 
@@ -19,7 +19,7 @@ class AnswerButton extends StatelessWidget {
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)) 
       ),
-       child: Text(answerText),
+       child: Text(answerText, textAlign: TextAlign.center),
     );
   }
 }
